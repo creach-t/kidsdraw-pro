@@ -1,68 +1,82 @@
 /**
- * Types et interfaces pour KidsDraw Pro
+ * Types complets pour KidsDraw Pro
  */
 
-export type ShapeType = 'circle' | 'square' | 'rectangle' | 'triangle' | 'star' | 'heart' | 'polygon' | 'line';
+// Outils disponibles
+export type Tool =
+  | 'select'    // Sélection
+  | 'pen'       // Plume/dessin libre
+  | 'eraser'    // Gomme
+  | 'hand'      // Main (pan)
+  | 'zoom'      // Zoom
+  | 'text'      // Texte
+  | 'brush'     // Pinceau
+  | 'eyedropper' // Pipette
+  | 'edit-points'; // Édition de points
 
-export type CanvasFormat = 
-  | 'a4-portrait' 
-  | 'a4-landscape' 
-  | 'a3-portrait' 
-  | 'a3-landscape' 
-  | 'instagram-square' 
-  | 'story' 
-  | 'custom';
+// Types de formes
+export type ShapeType =
+  | 'circle'
+  | 'square'
+  | 'rectangle'
+  | 'triangle'
+  | 'star'
+  | 'heart'
+  | 'polygon'
+  | 'line'
+  | 'path'
+  | 'text';
 
-/**
- * Point dans l'espace 2D avec support des courbes de Bézier
- */
+// Point avec coordonnées
 export interface Point {
   x: number;
   y: number;
-  type: 'anchor' | 'control';
-  cp1?: { x: number; y: number }; // Point de contrôle 1 pour courbes de Bézier
-  cp2?: { x: number; y: number }; // Point de contrôle 2 pour courbes de Bézier
+  type?: 'anchor' | 'control';
+  cp1?: { x: number; y: number }; // Point de contrôle 1 (Bézier)
+  cp2?: { x: number; y: number }; // Point de contrôle 2 (Bézier)
 }
 
-/**
- * Arrêt de couleur dans un dégradé
- */
-export interface GradientStop {
-  offset: number; // 0-1
-  color: string;
-}
-
-/**
- * Configuration d'un dégradé
- */
+// Dégradé
 export interface Gradient {
-  stops: GradientStop[];
-  angle?: number; // Angle pour dégradé linéaire (en degrés)
-  cx?: number; // Centre X pour dégradé radial (0-1)
-  cy?: number; // Centre Y pour dégradé radial (0-1)
+  type: 'linear' | 'radial';
+  stops: Array<{
+    offset: number;
+    color: string;
+  }>;
+  x1?: number;
+  y1?: number;
+  x2?: number;
+  y2?: number;
 }
 
-/**
- * Configuration de remplissage
- */
+// Remplissage
 export interface Fill {
-  type: 'solid' | 'linear' | 'radial';
+  type: 'solid' | 'gradient' | 'none';
   color?: string;
   gradient?: Gradient;
 }
 
-/**
- * Configuration de contour
- */
+// Contour
 export interface Stroke {
   width: number;
   color: string;
-  dashArray?: string; // Ex: "5,5" pour tirets
+  dashArray?: string;
+  lineCap?: 'butt' | 'round' | 'square';
+  lineJoin?: 'miter' | 'round' | 'bevel';
 }
 
-/**
- * Configuration d'ombre portée
- */
+// Transformation
+export interface Transform {
+  x: number;
+  y: number;
+  rotation: number;
+  scaleX: number;
+  scaleY: number;
+  skewX?: number;
+  skewY?: number;
+}
+
+// Ombre
 export interface Shadow {
   offsetX: number;
   offsetY: number;
@@ -70,20 +84,7 @@ export interface Shadow {
   color: string;
 }
 
-/**
- * Transformation 2D
- */
-export interface Transform {
-  x: number;
-  y: number;
-  rotation: number; // En degrés
-  scaleX: number;
-  scaleY: number;
-}
-
-/**
- * Forme vectorielle
- */
+// Forme
 export interface Shape {
   id: string;
   type: ShapeType;
@@ -92,67 +93,70 @@ export interface Shape {
   stroke: Stroke;
   transform: Transform;
   shadow?: Shadow;
+  opacity?: number;
+  visible?: boolean;
+  locked?: boolean;
+  name?: string;
+  order?: number;
 }
 
-/**
- * Calque
- */
+// Calque
 export interface Layer {
   id: string;
   name: string;
   visible: boolean;
   locked: boolean;
-  opacity: number; // 0-100
+  opacity: number;
   shapes: Shape[];
   order: number;
 }
 
-/**
- * Projet complet
- */
-export interface Project {
-  id: string;
-  userName: string;
-  projectName: string;
-  svgContent: string;
-  thumbnail: string; // Base64
-  layers: Layer[];
-  canvasFormat: CanvasFormat;
-  lastModified: number;
-  createdAt: number;
-}
-
-/**
- * Configuration d'un format de canvas
- */
+// Formats de canvas
 export interface CanvasFormatConfig {
   width: number;
   height: number;
   label: string;
 }
 
-/**
- * Historique pour undo/redo
- */
+export type CanvasFormat =
+  | 'a4-portrait'
+  | 'a4-landscape'
+  | 'a3-portrait'
+  | 'a3-landscape'
+  | 'instagram-square'
+  | 'instagram-story'
+  | 'custom';
+
+// Projet
+export interface Project {
+  id: string;
+  userName: string;
+  projectName: string;
+  layers: Layer[];
+  canvasFormat: CanvasFormat;
+  customWidth?: number;
+  customHeight?: number;
+  createdAt: number;
+  lastModified: number;
+}
+
+// État de l'historique
 export interface HistoryState {
   layers: Layer[];
   timestamp: number;
 }
 
-/**
- * Outil de dessin
- */
-export type Tool = 'select' | 'point-edit' | 'eraser' | 'hand' | 'zoom' | 'line' | 'text' | 'brush' | 'eyedropper';
+// Configuration de l'application
+export interface AppConfig {
+  canvasFormat: CanvasFormat;
+  gridEnabled: boolean;
+  rulersEnabled: boolean;
+  snapToGrid: boolean;
+  gridSize: number;
+}
 
-/**
- * État de l'application
- */
-export interface AppState {
-  currentProject: Project | null;
-  activeTool: Tool;
-  activeLayerId: string | null;
-  selectedShapeIds: string[];
-  zoom: number;
-  panX: number;
-  panY: number;
+// Événement de sélection
+export interface SelectionEvent {
+  shapeIds: string[];
+  layerId: string;
 }

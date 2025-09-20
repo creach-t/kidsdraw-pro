@@ -59,7 +59,7 @@ export function generateStarPoints(cx: number, cy: number, outerRadius: number, 
   const points: Point[] = [];
   const inner = innerRadius || outerRadius * 0.4;
   const numPoints = 5;
-  
+
   for (let i = 0; i < numPoints * 2; i++) {
     const angle = (i * Math.PI) / numPoints - Math.PI / 2;
     const radius = i % 2 === 0 ? outerRadius : inner;
@@ -69,7 +69,7 @@ export function generateStarPoints(cx: number, cy: number, outerRadius: number, 
       type: 'anchor'
     });
   }
-  
+
   return points;
 }
 
@@ -79,34 +79,34 @@ export function generateStarPoints(cx: number, cy: number, outerRadius: number, 
 export function generateHeartPoints(cx: number, cy: number, size: number): Point[] {
   const points: Point[] = [];
   const scale = size / 100;
-  
+
   // Utilise une courbe de Bézier pour créer un cœur
   return [
     { x: cx, y: cy + 30 * scale, type: 'anchor' },
-    { 
-      x: cx - 50 * scale, 
-      y: cy - 20 * scale, 
+    {
+      x: cx - 50 * scale,
+      y: cy - 20 * scale,
       type: 'anchor',
       cp1: { x: cx - 20 * scale, y: cy - 40 * scale },
       cp2: { x: cx - 50 * scale, y: cy - 40 * scale }
     },
-    { 
-      x: cx, 
-      y: cy - 50 * scale, 
+    {
+      x: cx,
+      y: cy - 50 * scale,
       type: 'anchor',
       cp1: { x: cx - 50 * scale, y: cy - 50 * scale },
       cp2: { x: cx, y: cy - 50 * scale }
     },
-    { 
-      x: cx + 50 * scale, 
-      y: cy - 20 * scale, 
+    {
+      x: cx + 50 * scale,
+      y: cy - 20 * scale,
       type: 'anchor',
       cp1: { x: cx + 50 * scale, y: cy - 50 * scale },
       cp2: { x: cx + 50 * scale, y: cy - 40 * scale }
     },
-    { 
-      x: cx, 
-      y: cy + 30 * scale, 
+    {
+      x: cx,
+      y: cy + 30 * scale,
       type: 'anchor',
       cp1: { x: cx + 20 * scale, y: cy - 40 * scale }
     }
@@ -118,7 +118,7 @@ export function generateHeartPoints(cx: number, cy: number, size: number): Point
  */
 export function generatePolygonPoints(cx: number, cy: number, radius: number, sides: number = 6): Point[] {
   const points: Point[] = [];
-  
+
   for (let i = 0; i < sides; i++) {
     const angle = (i * 2 * Math.PI) / sides - Math.PI / 2;
     points.push({
@@ -127,7 +127,7 @@ export function generatePolygonPoints(cx: number, cy: number, radius: number, si
       type: 'anchor'
     });
   }
-  
+
   return points;
 }
 
@@ -151,7 +151,7 @@ export function createShape(
   size: number = 100
 ): Shape {
   let points: Point[];
-  
+
   switch (type) {
     case 'circle':
       points = generateCirclePoints(x, y, size / 2);
@@ -180,7 +180,7 @@ export function createShape(
     default:
       points = generateCirclePoints(x, y, size / 2);
   }
-  
+
   return {
     id: nanoid(),
     type,
@@ -196,14 +196,14 @@ export function createShape(
  */
 export function getShapeCenter(shape: Shape): { x: number; y: number } {
   const points = shape.points.filter(p => p.type === 'anchor');
-  
+
   if (points.length === 0) {
     return { x: 0, y: 0 };
   }
-  
+
   const sumX = points.reduce((sum, p) => sum + p.x, 0);
   const sumY = points.reduce((sum, p) => sum + p.y, 0);
-  
+
   return {
     x: sumX / points.length,
     y: sumY / points.length
@@ -220,19 +220,19 @@ export function getShapeBounds(shape: Shape): {
   height: number;
 } {
   const points = shape.points.filter(p => p.type === 'anchor');
-  
+
   if (points.length === 0) {
     return { x: 0, y: 0, width: 0, height: 0 };
   }
-  
+
   const xs = points.map(p => p.x);
   const ys = points.map(p => p.y);
-  
+
   const minX = Math.min(...xs);
   const maxX = Math.max(...xs);
   const minY = Math.min(...ys);
   const maxY = Math.max(...ys);
-  
+
   return {
     x: minX,
     y: minY,
@@ -246,7 +246,7 @@ export function getShapeBounds(shape: Shape): {
  */
 export function isPointInShape(shape: Shape, x: number, y: number, threshold: number = 5): boolean {
   const bounds = getShapeBounds(shape);
-  
+
   // Vérification simple par bounding box + threshold
   return (
     x >= bounds.x - threshold &&
@@ -298,7 +298,7 @@ export function rotateShape(shape: Shape, angle: number): Shape {
   const rad = (angle * Math.PI) / 180;
   const cos = Math.cos(rad);
   const sin = Math.sin(rad);
-  
+
   return {
     ...shape,
     points: shape.points.map(p => {
@@ -322,7 +322,7 @@ export function rotateShape(shape: Shape, angle: number): Shape {
  */
 export function scaleShape(shape: Shape, scaleX: number, scaleY: number): Shape {
   const center = getShapeCenter(shape);
-  
+
   return {
     ...shape,
     points: shape.points.map(p => ({

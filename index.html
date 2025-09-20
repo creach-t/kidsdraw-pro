@@ -13,7 +13,7 @@
     <div class="welcome-container">
       <h1>🎨 KidsDraw Pro</h1>
       <p class="subtitle">Crée tes dessins vectoriels !</p>
-      
+
       <div class="options">
         <button class="option-card" id="new-project">
           <span class="icon">➕</span>
@@ -24,7 +24,7 @@
           <span class="label">Reprendre un travail</span>
         </button>
       </div>
-      
+
       <button class="import-btn" id="import-svg">
         <span>📥 Importer SVG</span>
       </button>
@@ -56,7 +56,7 @@
       <h2>📂 Mes dessins</h2>
       <button id="back-to-welcome" class="btn-secondary">← Retour</button>
     </div>
-    
+
     <div class="gallery-controls">
       <input id="search" type="text" placeholder="🔍 Rechercher un dessin..." />
       <select id="sort">
@@ -65,9 +65,9 @@
         <option value="name">Par nom (A-Z)</option>
       </select>
     </div>
-    
+
     <div id="projects-grid" class="projects-grid"></div>
-    
+
     <div id="no-projects" class="no-projects hidden">
       <p>Aucun dessin trouvé</p>
       <p class="hint">Crée ton premier dessin pour commencer !</p>
@@ -91,7 +91,7 @@
         <button id="back-to-gallery" class="btn-secondary">← Galerie</button>
       </div>
     </header>
-    
+
     <main class="editor-main">
       <!-- Barre d'outils -->
       <aside id="toolbar" class="toolbar">
@@ -99,24 +99,24 @@
           <h3>Outils</h3>
           <div class="tools" id="tools-list"></div>
         </div>
-        
+
         <div class="toolbar-section">
           <h3>Formes</h3>
           <div class="shapes" id="shapes-list"></div>
         </div>
-        
+
         <div class="toolbar-section">
           <h3>Couleurs</h3>
           <div class="colors" id="colors-list"></div>
           <input type="color" id="custom-color" title="Couleur personnalisée">
         </div>
-        
+
         <div class="toolbar-section">
           <h3>Format</h3>
           <select id="format-selector" class="format-selector"></select>
         </div>
       </aside>
-      
+
       <!-- Zone de dessin -->
       <section id="canvas-container" class="canvas-container">
         <div class="canvas-wrapper">
@@ -129,7 +129,7 @@
           <button id="zoom-fit" title="Ajuster (Ctrl+1)">⊡</button>
         </div>
       </section>
-      
+
       <!-- Panneau calques -->
       <aside id="layers-panel" class="layers-panel">
         <div class="panel-header">
@@ -139,7 +139,7 @@
         <div id="layers-list" class="layers-list"></div>
       </aside>
     </main>
-    
+
     <footer class="editor-footer">
       <span id="status" class="status">Prêt</span>
       <span id="position" class="position"></span>
