@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Éditeur de dessin vectoriel 2D pour enfants de 6-10 ans">
+  <title>🎨 KidsDraw Pro</title>
+  <link rel="stylesheet" href="/src/styles.css">
+</head>
+<body>
+  <!-- Écran d'accueil -->
+  <div id="welcome-screen">
+    <div class="welcome-container">
+      <h1>🎨 KidsDraw Pro</h1>
+      <p class="subtitle">Crée tes dessins vectoriels !</p>
+      
+      <div class="options">
+        <button class="option-card" id="new-project">
+          <span class="icon">➕</span>
+          <span class="label">Nouveau dessin</span>
+        </button>
+        <button class="option-card" id="load-project">
+          <span class="icon">📂</span>
+          <span class="label">Reprendre un travail</span>
+        </button>
+      </div>
+      
+      <button class="import-btn" id="import-svg">
+        <span>📥 Importer SVG</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal nouveau projet -->
+  <div id="new-project-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Nouveau dessin</h2>
+      <div class="form-group">
+        <label for="user-name">Ton prénom</label>
+        <input id="user-name" type="text" placeholder="Ex: Sarah" maxlength="50" required>
+      </div>
+      <div class="form-group">
+        <label for="project-name">Nom du dessin</label>
+        <input id="project-name" type="text" placeholder="Ex: Mon château" maxlength="100" required>
+      </div>
+      <div class="modal-actions">
+        <button id="cancel-new-project" class="btn-secondary">Annuler</button>
+        <button id="start-drawing" class="btn-primary">Commencer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Galerie projets -->
+  <div id="projects-gallery" class="hidden">
+    <div class="gallery-header">
+      <h2>📂 Mes dessins</h2>
+      <button id="back-to-welcome" class="btn-secondary">← Retour</button>
+    </div>
+    
+    <div class="gallery-controls">
+      <input id="search" type="text" placeholder="🔍 Rechercher un dessin..." />
+      <select id="sort">
+        <option value="recent">Plus récent</option>
+        <option value="oldest">Plus ancien</option>
+        <option value="name">Par nom (A-Z)</option>
+      </select>
+    </div>
+    
+    <div id="projects-grid" class="projects-grid"></div>
+    
+    <div id="no-projects" class="no-projects hidden">
+      <p>Aucun dessin trouvé</p>
+      <p class="hint">Crée ton premier dessin pour commencer !</p>
+    </div>
+  </div>
+
+  <!-- Éditeur -->
+  <div id="editor" class="hidden">
+    <header class="editor-header">
+      <div class="header-left">
+        <h1>🎨 KidsDraw Pro</h1>
+        <span id="project-title" class="project-title"></span>
+      </div>
+      <div class="header-actions">
+        <button id="save" class="btn-icon" title="Sauvegarder (Ctrl+S)">
+          <span>💾</span>
+        </button>
+        <button id="export" class="btn-icon" title="Exporter SVG (Ctrl+E)">
+          <span>📥</span>
+        </button>
+        <button id="back-to-gallery" class="btn-secondary">← Galerie</button>
+      </div>
+    </header>
+    
+    <main class="editor-main">
+      <!-- Barre d'outils -->
+      <aside id="toolbar" class="toolbar">
+        <div class="toolbar-section">
+          <h3>Outils</h3>
+          <div class="tools" id="tools-list"></div>
+        </div>
+        
+        <div class="toolbar-section">
+          <h3>Formes</h3>
+          <div class="shapes" id="shapes-list"></div>
+        </div>
+        
+        <div class="toolbar-section">
+          <h3>Couleurs</h3>
+          <div class="colors" id="colors-list"></div>
+          <input type="color" id="custom-color" title="Couleur personnalisée">
+        </div>
+        
+        <div class="toolbar-section">
+          <h3>Format</h3>
+          <select id="format-selector" class="format-selector"></select>
+        </div>
+      </aside>
+      
+      <!-- Zone de dessin -->
+      <section id="canvas-container" class="canvas-container">
+        <div class="canvas-wrapper">
+          <svg id="canvas"></svg>
+        </div>
+        <div class="canvas-controls">
+          <button id="zoom-in" title="Zoom + (Ctrl++)">🔍+</button>
+          <span id="zoom-level">100%</span>
+          <button id="zoom-out" title="Zoom - (Ctrl+-)">🔍-</button>
+          <button id="zoom-fit" title="Ajuster (Ctrl+1)">⊡</button>
+        </div>
+      </section>
+      
+      <!-- Panneau calques -->
+      <aside id="layers-panel" class="layers-panel">
+        <div class="panel-header">
+          <h3>Calques</h3>
+          <button id="new-layer" class="btn-icon" title="Nouveau calque (Ctrl+Shift+N)">+</button>
+        </div>
+        <div id="layers-list" class="layers-list"></div>
+      </aside>
+    </main>
+    
+    <footer class="editor-footer">
+      <span id="status" class="status">Prêt</span>
+      <span id="position" class="position"></span>
+    </footer>
+  </div>
+
+  <!-- Input file caché pour import SVG -->
+  <input type="file" id="svg-file-input" accept=".svg" class="hidden">
+
+  <!-- Toast notifications -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script type="module" src="/src/app.ts"></script>
+</body>
+</html>
